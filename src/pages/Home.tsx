@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
-import { Award, Briefcase, Globe, Users, ExternalLink, ArrowLeft } from "lucide-react";
+import { Award, ArrowLeft } from "lucide-react";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import AnimatedSection, { staggerContainer, staggerItem } from "@/components/AnimatedSection";
 
 const NAV_LINKS = [
   { to: "/", label: "الرئيسية" },
@@ -18,21 +20,9 @@ const STATS = [
 ];
 
 const PROJECTS = [
-  {
-    title: "هوية بصرية لمخبز هَش",
-    category: "مؤسسات",
-    color: "bg-red-50",
-  },
-  {
-    title: "Seeb | سيب",
-    category: "Wellness",
-    color: "bg-indigo-50",
-  },
-  {
-    title: "Seen | س",
-    category: "علامات تجارية",
-    color: "bg-amber-50",
-  },
+  { title: "هوية بصرية لمخبز هَش", category: "مؤسسات", color: "bg-red-50" },
+  { title: "Seeb | سيب", category: "Wellness", color: "bg-indigo-50" },
+  { title: "Seen | س", category: "علامات تجارية", color: "bg-amber-50" },
 ];
 
 const ACHIEVEMENTS = [
@@ -80,7 +70,7 @@ const Home = () => (
     {/* Hero */}
     <section className="container py-16 md:py-24">
       <div className="grid items-center gap-10 md:grid-cols-2">
-        <div className="order-2 md:order-1">
+        <AnimatedSection className="order-2 md:order-1" direction="right">
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-border px-4 py-1.5 text-sm text-muted-foreground">
             <span className="h-2 w-2 rounded-full bg-green-500" />
             متاح لمشاريع مُختارة
@@ -95,81 +85,111 @@ const Home = () => (
             اعمل على تحويل العلامة الى قصة، والقصة الى هُوية بصريّة من خلال منهجية تعتمد على بناء استراتيجي للعلامة.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Button className="rounded-full gap-2">
-              استمارة طلب مشروع
-            </Button>
-            <Button variant="outline" className="rounded-full gap-2">
-              تواصل معي
-            </Button>
+            <Button className="rounded-full gap-2">استمارة طلب مشروع</Button>
+            <Button variant="outline" className="rounded-full gap-2">تواصل معي</Button>
           </div>
-        </div>
-        <div className="order-1 flex justify-center md:order-2">
+        </AnimatedSection>
+        <AnimatedSection className="order-1 flex justify-center md:order-2" direction="left" delay={0.2}>
           <div className="relative h-72 w-60 overflow-hidden rounded-2xl bg-muted md:h-96 md:w-72">
             <div className="flex h-full items-center justify-center text-muted-foreground text-sm">صورة شخصية</div>
           </div>
-        </div>
+        </AnimatedSection>
       </div>
     </section>
 
     {/* Stats */}
     <section className="border-y border-border">
-      <div className="container grid grid-cols-2 gap-6 py-10 md:grid-cols-4">
+      <motion.div
+        variants={staggerContainer}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        className="container grid grid-cols-2 gap-6 py-10 md:grid-cols-4"
+      >
         {STATS.map((s) => (
-          <div key={s.label} className="text-center">
+          <motion.div key={s.label} variants={staggerItem} className="text-center">
             <div className="font-display text-3xl font-bold text-foreground md:text-4xl">{s.value}</div>
             <p className="mt-1 text-sm text-muted-foreground">{s.label}</p>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </section>
 
     {/* Projects */}
     <section className="container py-16">
-      <div className="mb-8 flex items-center justify-between">
-        <h2 className="font-display text-2xl font-bold">أحدث أعمالي</h2>
-        <button className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors">
-          تصفح جميع الأعمال
-          <ArrowLeft className="h-4 w-4" />
-        </button>
-      </div>
-      <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
+      <AnimatedSection>
+        <div className="mb-8 flex items-center justify-between">
+          <h2 className="font-display text-2xl font-bold">أحدث أعمالي</h2>
+          <button className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors">
+            تصفح جميع الأعمال
+            <ArrowLeft className="h-4 w-4" />
+          </button>
+        </div>
+      </AnimatedSection>
+      <motion.div
+        variants={staggerContainer}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        className="grid gap-6 sm:grid-cols-2 md:grid-cols-3"
+      >
         {PROJECTS.map((p) => (
-          <Card key={p.title} className="group cursor-pointer overflow-hidden border-border transition-shadow hover:shadow-md">
-            <div className={`${p.color} flex h-48 items-center justify-center`}>
-              <span className="text-muted-foreground text-sm">معاينة المشروع</span>
-            </div>
-            <CardContent className="p-4">
-              <p className="text-xs text-muted-foreground">{p.category}</p>
-              <h3 className="mt-1 font-display font-semibold text-foreground">{p.title}</h3>
-            </CardContent>
-          </Card>
+          <motion.div key={p.title} variants={staggerItem}>
+            <Card className="group cursor-pointer overflow-hidden border-border transition-shadow hover:shadow-md">
+              <div className={`${p.color} flex h-48 items-center justify-center`}>
+                <span className="text-muted-foreground text-sm">معاينة المشروع</span>
+              </div>
+              <CardContent className="p-4">
+                <p className="text-xs text-muted-foreground">{p.category}</p>
+                <h3 className="mt-1 font-display font-semibold text-foreground">{p.title}</h3>
+              </CardContent>
+            </Card>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </section>
 
     {/* Achievements */}
     <section className="container py-16">
-      <h2 className="mb-8 font-display text-2xl font-bold">جوائز وإنجازات 🏆</h2>
-      <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
+      <AnimatedSection>
+        <h2 className="mb-8 font-display text-2xl font-bold">جوائز وإنجازات 🏆</h2>
+      </AnimatedSection>
+      <motion.div
+        variants={staggerContainer}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        className="grid gap-6 sm:grid-cols-2 md:grid-cols-3"
+      >
         {ACHIEVEMENTS.map((a) => (
-          <Card key={a.title} className="border-border">
-            <div className="flex h-40 items-center justify-center bg-muted rounded-t-lg">
-              <Award className="h-10 w-10 text-primary" />
-            </div>
-            <CardContent className="p-4 text-center">
-              <p className="text-xs text-muted-foreground">{a.event}</p>
-              <h3 className="mt-1 font-display font-semibold">{a.title}</h3>
-              <p className="mt-2 text-xs text-muted-foreground leading-relaxed">{a.desc}</p>
-            </CardContent>
-          </Card>
+          <motion.div key={a.title} variants={staggerItem}>
+            <Card className="border-border">
+              <div className="flex h-40 items-center justify-center bg-muted rounded-t-lg">
+                <Award className="h-10 w-10 text-primary" />
+              </div>
+              <CardContent className="p-4 text-center">
+                <p className="text-xs text-muted-foreground">{a.event}</p>
+                <h3 className="mt-1 font-display font-semibold">{a.title}</h3>
+                <p className="mt-2 text-xs text-muted-foreground leading-relaxed">{a.desc}</p>
+              </CardContent>
+            </Card>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </section>
 
     {/* Career Highlights */}
     <section className="container py-16">
-      <h2 className="mb-8 font-display text-2xl font-bold">أبرز محطات مسيرتي ✨</h2>
-      <ul className="space-y-3">
+      <AnimatedSection>
+        <h2 className="mb-8 font-display text-2xl font-bold">أبرز محطات مسيرتي ✨</h2>
+      </AnimatedSection>
+      <motion.ul
+        variants={staggerContainer}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        className="space-y-3"
+      >
         {[
           "متخرج من الهندسة المعمارية من الجامعة المصرية الروسية بالقاهرة",
           "قمت بإعادة تصميم هوية مركز تطوير التعليم الجامعي",
@@ -177,37 +197,47 @@ const Home = () => (
           "عملت على مشروع هوية محافظة Jungfrukusten السياحية بدولة السويد",
           "قمت بتدريس دورة تصميم وبناء الهويات البصرية لأكثر من 450 طالب",
         ].map((item) => (
-          <li key={item} className="flex items-start gap-3 text-sm text-muted-foreground leading-relaxed">
+          <motion.li key={item} variants={staggerItem} className="flex items-start gap-3 text-sm text-muted-foreground leading-relaxed">
             <span className="mt-1 text-primary">◆</span>
             {item}
-          </li>
+          </motion.li>
         ))}
-      </ul>
+      </motion.ul>
     </section>
 
     {/* Testimonials */}
     <section className="bg-secondary/50 py-16">
       <div className="container">
-        <h2 className="mb-8 font-display text-2xl font-bold">كلمات من عملائي 💬</h2>
-        <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
+        <AnimatedSection>
+          <h2 className="mb-8 font-display text-2xl font-bold">كلمات من عملائي 💬</h2>
+        </AnimatedSection>
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="grid gap-6 sm:grid-cols-2 md:grid-cols-3"
+        >
           {TESTIMONIALS.map((t) => (
-            <Card key={t.name} className="border-border">
-              <CardContent className="p-6">
-                <div className="mb-4 text-3xl text-primary/30">❝</div>
-                <p className="text-sm leading-relaxed text-muted-foreground">{t.text}</p>
-                <div className="mt-4 border-t border-border pt-4">
-                  <p className="font-display font-semibold text-sm">{t.name}</p>
-                  <p className="text-xs text-muted-foreground">{t.role}</p>
-                </div>
-              </CardContent>
-            </Card>
+            <motion.div key={t.name} variants={staggerItem}>
+              <Card className="border-border">
+                <CardContent className="p-6">
+                  <div className="mb-4 text-3xl text-primary/30">❝</div>
+                  <p className="text-sm leading-relaxed text-muted-foreground">{t.text}</p>
+                  <div className="mt-4 border-t border-border pt-4">
+                    <p className="font-display font-semibold text-sm">{t.name}</p>
+                    <p className="text-xs text-muted-foreground">{t.role}</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
 
     {/* FAQ */}
-    <section className="container py-16">
+    <AnimatedSection className="container py-16">
       <h2 className="mb-8 font-display text-2xl font-bold">أسئلة قد تراودك 💭</h2>
       <Accordion type="single" collapsible className="mx-auto max-w-2xl">
         {FAQ.map((f, i) => (
@@ -216,29 +246,29 @@ const Home = () => (
               <span className="ml-3 text-muted-foreground">{String(i + 1).padStart(2, "0")}</span>
               {f.q}
             </AccordionTrigger>
-            <AccordionContent className="text-sm text-muted-foreground leading-relaxed">
-              {f.a}
-            </AccordionContent>
+            <AccordionContent className="text-sm text-muted-foreground leading-relaxed">{f.a}</AccordionContent>
           </AccordionItem>
         ))}
       </Accordion>
-    </section>
+    </AnimatedSection>
 
     {/* Newsletter */}
-    <section className="border-t border-border py-16">
-      <div className="container text-center">
-        <h2 className="font-display text-2xl font-bold">سجّل بريدك</h2>
-        <p className="mt-2 text-sm text-muted-foreground">قيمة جديدة كل أسبوع</p>
-        <div className="mx-auto mt-6 flex max-w-sm gap-2">
-          <input
-            type="email"
-            placeholder="البريد الإلكتروني"
-            className="flex-1 rounded-full border border-input bg-background px-4 py-2 text-sm text-right placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-          />
-          <Button className="rounded-full">اشترك</Button>
+    <AnimatedSection>
+      <section className="border-t border-border py-16">
+        <div className="container text-center">
+          <h2 className="font-display text-2xl font-bold">سجّل بريدك</h2>
+          <p className="mt-2 text-sm text-muted-foreground">قيمة جديدة كل أسبوع</p>
+          <div className="mx-auto mt-6 flex max-w-sm gap-2">
+            <input
+              type="email"
+              placeholder="البريد الإلكتروني"
+              className="flex-1 rounded-full border border-input bg-background px-4 py-2 text-sm text-right placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+            />
+            <Button className="rounded-full">اشترك</Button>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </AnimatedSection>
 
     {/* Footer */}
     <footer className="border-t border-border py-8">
